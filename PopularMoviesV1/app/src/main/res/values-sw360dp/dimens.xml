@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- movie_item_view.xml -->
+    <dimen name="movie_item_view_padding">10dp</dimen>
+    <dimen name="movie_item_view_poster_width">100dp</dimen>
+    <dimen name="movie_item_view_poster_height">133dp</dimen>
+
+    <!-- movie_detail_activity_poster.xml -->
+    <dimen name="movie_detail_activity_poster_width">100dp</dimen>
+    <dimen name="movie_detail_activity_poster_height">133dp</dimen>
+</resources>
