@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+
+    <!-- main_activity_menu.xml -->
+    <string name="main_activity_menu_most_popular_movies_title">Most Popular Movies</string>
+    <string name="main_activity_menu_top_rated_movies_title">Top Rated Movies</string>
+    <string name="main_activity_try_again_button_text">Try Again</string>
+
+    <!-- MovieDetailActivity.java -->
+    <string name="movie_detail_activity_user_rating_text">User Rating: %1$s</string>
+    <string name="movie_detail_activity_release_date_text">Release Date: %1$s</string>
+    <string name="movie_detail_activity_most_popular_movies_loading_error_message">An error
+    has occurred while loading the most popular movies.</string>
+    <string name="movie_detail_activity_top_rated_movies_loading_error_message">An error
+    has occurred while loading the top rated movies.</string>
+</resources>
