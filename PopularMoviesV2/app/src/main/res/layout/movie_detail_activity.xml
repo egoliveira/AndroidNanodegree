@@ -1,61 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="br.com.gielamo.popularmovies.view.detail.MovieDetailActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/movie_detail_activity_app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/movie_detail_activity_collapsing_toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:title="Teste">
+
+            <ImageView
+                android:id="@+id/movie_detail_activity_backdrop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="8dp"
-                tools:context="br.com.gielamo.popularmovies.view.MovieDetailActivity">
+                android:fitsSystemWindows="true"
+                android:scaleType="centerCrop"
+                app:layout_collapseMode="parallax" />
 
-    <ImageView
-        android:id="@+id/movie_detail_activity_poster"
-        android:layout_width="@dimen/movie_detail_activity_poster_width"
-        android:layout_height="@dimen/movie_detail_activity_poster_height"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"/>
+            <ProgressBar
+                style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                app:layout_collapseMode="pin" />
 
-    <TextView
-        android:id="@+id/movie_detail_activity_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_toEndOf="@id/movie_detail_activity_poster"
-        android:layout_toRightOf="@id/movie_detail_activity_poster"
-        android:textSize="16sp"
-        android:textStyle="bold"/>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/movie_detail_activity_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
 
-    <TextView
-        android:id="@+id/movie_detail_activity_user_rating"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/movie_detail_activity_title"
-        android:layout_alignStart="@id/movie_detail_activity_title"
-        android:layout_below="@id/movie_detail_activity_title"
-        android:layout_marginTop="8dp"
-        android:textSize="14sp"/>
-
-    <TextView
-        android:id="@+id/movie_detail_activity_user_release_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/movie_detail_activity_title"
-        android:layout_alignStart="@id/movie_detail_activity_title"
-        android:layout_below="@id/movie_detail_activity_user_rating"
-        android:layout_marginTop="8dp"
-        android:textSize="14sp"/>
-
-    <ScrollView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/movie_detail_activity_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/movie_detail_activity_poster"
-        android:layout_marginTop="8dp">
-
-        <TextView
-            android:id="@+id/movie_detail_activity_synopsis"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"/>
-    </ScrollView>
-</RelativeLayout>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+</android.support.design.widget.CoordinatorLayout>

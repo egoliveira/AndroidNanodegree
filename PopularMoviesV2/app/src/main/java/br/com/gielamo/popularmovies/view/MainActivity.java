@@ -19,6 +19,7 @@ import br.com.gielamo.popularmovies.R;
 import br.com.gielamo.popularmovies.controller.MainController;
 import br.com.gielamo.popularmovies.controller.MoviesAdapter;
 import br.com.gielamo.popularmovies.model.vo.MainControllerMessage;
+import br.com.gielamo.popularmovies.view.detail.MovieDetailActivity;
 
 public class MainActivity extends AppCompatActivity {
     private MainController mController;

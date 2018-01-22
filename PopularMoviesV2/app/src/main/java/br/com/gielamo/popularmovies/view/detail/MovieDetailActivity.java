@@ -1,9 +1,10 @@
-package br.com.gielamo.popularmovies.view;
+package br.com.gielamo.popularmovies.view.detail;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
@@ -12,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.gielamo.popularmovies.R;
-import br.com.gielamo.popularmovies.controller.MovieDetailController;
 import br.com.gielamo.popularmovies.controller.MovieInfoAdapter;
 import br.com.gielamo.popularmovies.model.vo.ImageWidth;
 import br.com.gielamo.popularmovies.model.vo.Movie;
@@ -25,13 +25,15 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private MovieInfoAdapter mAdapter;
 
-    private MovieDetailController mController;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.movie_detail_activity);
+
+        Toolbar toolbar = findViewById(R.id.movie_detail_activity_toolbar);
+
+        setSupportActionBar(toolbar);
 
         Bundle extras = getIntent().getExtras();
 
@@ -39,8 +41,6 @@ public class MovieDetailActivity extends AppCompatActivity {
             mMovie = extras.getParcelable(MOVIE_DATA_EXTRA);
 
             if (mMovie != null) {
-                mController = new MovieDetailController(this, mMovie);
-                
                 mAdapter = new MovieInfoAdapter();
                 populateAdapter();
 
@@ -59,21 +59,6 @@ public class MovieDetailActivity extends AppCompatActivity {
         } else {
             finish();
         }
-
-        if (mController != null) {
-            if (savedInstanceState == null) {
-                mController.loadMovieInfo();
-            } else {
-                mController.restoreState(savedInstanceState);
-            }
-        }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        mController.saveState(outState);
     }
 
     private void populateAdapter() {

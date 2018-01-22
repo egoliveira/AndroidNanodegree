@@ -2,8 +2,6 @@
 <resources>
     <!-- main_activity.xml -->
     <dimen name="main_activity_top_progress_marginTop">-7dp</dimen>
-
-    <!-- movie_detail_activity_poster.xml -->
-    <dimen name="movie_detail_activity_poster_width">90dp</dimen>
-    <dimen name="movie_detail_activity_poster_height">120dp</dimen>
+    <dimen name="movie_info_view_poster_width">134dp</dimen>
+    <dimen name="movie_info_view_poster_height">200dp</dimen>
 </resources>

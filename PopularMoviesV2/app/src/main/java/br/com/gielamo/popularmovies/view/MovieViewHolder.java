@@ -10,7 +10,7 @@ import com.squareup.picasso.Transformation;
 
 import br.com.gielamo.popularmovies.R;
 import br.com.gielamo.popularmovies.model.vo.Movie;
-import br.com.gielamo.popularmovies.model.vo.PosterWidth;
+import br.com.gielamo.popularmovies.model.vo.ImageWidth;
 import br.com.gielamo.popularmovies.util.PosterUtil;
 
 public class MovieViewHolder extends RecyclerView.ViewHolder {
@@ -33,10 +33,10 @@ public class MovieViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(final Movie movie) {
         final int posterWidthPx = PosterUtil.getMoviesListPosterWidthPx(mPoster.getContext());
-        final PosterWidth posterWidth = PosterWidth.getProperPosterWidth(posterWidthPx);
+        final ImageWidth imageWidth = ImageWidth.getProperImageWidth(posterWidthPx);
         final int orientation = mPoster.getContext().getResources().getConfiguration().orientation;
 
-        Picasso.with(mPoster.getContext()).load(movie.getPosterUrl(posterWidth)).transform(new Transformation() {
+        Picasso.with(mPoster.getContext()).load(movie.getPosterUrl(imageWidth)).transform(new Transformation() {
             @Override
             public Bitmap transform(Bitmap source) {
                 int height = posterWidthPx * source.getHeight() / source.getWidth();

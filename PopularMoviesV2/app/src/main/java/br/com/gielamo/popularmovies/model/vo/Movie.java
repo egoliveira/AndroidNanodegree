@@ -6,7 +6,10 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 
 public class Movie implements Parcelable, MovieInfo {
@@ -39,6 +42,9 @@ public class Movie implements Parcelable, MovieInfo {
     @SerializedName("release_date")
     private Date mReleaseDate;
 
+    @SerializedName("runtime")
+    private BigInteger mRuntime;
+
     public Movie() {
     }
 
@@ -53,6 +59,7 @@ public class Movie implements Parcelable, MovieInfo {
         this.mOverview = in.readString();
         long tmpMReleaseDate = in.readLong();
         this.mReleaseDate = tmpMReleaseDate == -1 ? null : new Date(tmpMReleaseDate);
+        this.mRuntime = (BigInteger) in.readSerializable();
     }
 
     public long getId() {
@@ -127,44 +134,75 @@ public class Movie implements Parcelable, MovieInfo {
         this.mReleaseDate = releaseDate;
     }
 
-    public String getPosterUrl(PosterWidth posterWidth) {
+    public String getPosterUrl(ImageWidth imageWidth) {
         String posterUrl = null;
 
-        if ((mPosterPath != null) && (posterWidth != null)) {
+        if ((mPosterPath != null) && (imageWidth != null)) {
             Uri.Builder builder = Uri.parse(IMAGE_BASE_URL).buildUpon();
 
-            switch (posterWidth) {
-                case W92:
-                    builder.appendPath("w92");
-                    break;
-                case W154:
-                    builder.appendPath("w154");
-                    break;
-                case W185:
-                    builder.appendPath("w185");
-                    break;
-                case W342:
-                    builder.appendPath("w342");
-                    break;
-                case W500:
-                    builder.appendPath("w500");
-                    break;
-                case W780:
-                    builder.appendPath("w780");
-                    break;
-                case ORIGINAL:
-                    builder.appendPath("original");
-                    break;
-                default:
-                    break;
-            }
-
+            builder.appendPath(getImageWidthPathSegment(imageWidth));
             builder.appendEncodedPath(mPosterPath);
 
             posterUrl = builder.build().toString();
         }
 
         return posterUrl;
+    }
+
+    public String getBackdropUrl(ImageWidth imageWidth) {
+        String backdropUrl = null;
+
+        if ((mBackdropPath != null) && (imageWidth != null)) {
+            Uri.Builder builder = Uri.parse(IMAGE_BASE_URL).buildUpon();
+
+            builder.appendPath(getImageWidthPathSegment(imageWidth));
+            builder.appendEncodedPath(mBackdropPath);
+
+            backdropUrl = builder.build().toString();
+        }
+
+        return backdropUrl;
+    }
+
+    public BigInteger getRuntime() {
+        return mRuntime;
+    }
+
+    public void setRuntime(BigInteger runtime) {
+        this.mRuntime = runtime;
+    }
+
+    private String getImageWidthPathSegment(ImageWidth imageWidth) {
+        String pathSegment;
+
+        switch (imageWidth) {
+            case W92:
+                pathSegment = "w92";
+                break;
+            case W154:
+                pathSegment = "w154";
+                break;
+            case W185:
+                pathSegment = "w185";
+                break;
+            case W342:
+                pathSegment = "w342";
+                break;
+            case W500:
+                pathSegment = "w500";
+                break;
+            case W780:
+                pathSegment = "w780";
+                break;
+            case ORIGINAL:
+                pathSegment = "original";
+                break;
+            default:
+                pathSegment = StringUtils.EMPTY;
+                break;
+        }
+
+        return pathSegment;
     }
 
     @Override
@@ -183,6 +221,7 @@ public class Movie implements Parcelable, MovieInfo {
         dest.writeString(this.mBackdropPath);
         dest.writeString(this.mOverview);
         dest.writeLong(this.mReleaseDate != null ? this.mReleaseDate.getTime() : -1);
+        dest.writeSerializable(mRuntime);
     }
 
 
