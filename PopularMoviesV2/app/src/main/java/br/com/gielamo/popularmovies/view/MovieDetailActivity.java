@@ -12,13 +12,16 @@ import java.text.DateFormat;
 import java.text.NumberFormat;
 
 import br.com.gielamo.popularmovies.R;
-import br.com.gielamo.popularmovies.model.vo.PosterWidth;
+import br.com.gielamo.popularmovies.controller.MovieDetailController;
 import br.com.gielamo.popularmovies.model.vo.Movie;
+import br.com.gielamo.popularmovies.model.vo.PosterWidth;
 
 public class MovieDetailActivity extends AppCompatActivity {
     public static final String MOVIE_DATA_EXTRA = "br.com.gielamo.popularmovies.EXTRA.MOVIE_DATA";
 
     private Movie mMovie;
+
+    private MovieDetailController mController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,8 @@ public class MovieDetailActivity extends AppCompatActivity {
             if (mMovie != null) {
                 setTitle(mMovie.getTitle());
 
+                mController = new MovieDetailController(this, mMovie);
+
                 ViewHolder viewHolder = new ViewHolder();
 
                 viewHolder.update();
@@ -43,6 +48,21 @@ public class MovieDetailActivity extends AppCompatActivity {
         } else {
             finish();
         }
+
+        if (mController != null) {
+            if (savedInstanceState == null) {
+                mController.loadMovieInfo();
+            } else {
+                mController.restoreState(savedInstanceState);
+            }
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        mController.saveState(outState);
     }
 
     private class ViewHolder {
