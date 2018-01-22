@@ -21,6 +21,10 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 public class MainController extends BusController {
+    public enum MoviesCategory {
+        MOST_POPULAR, TOP_RATED
+    }
+
     private static final String LOG_TAG = MainController.class.getSimpleName();
 
     private static final int MOVIES_LIST_REQUEST_ID = 7;
@@ -28,10 +32,6 @@ public class MainController extends BusController {
     private static final String MOVIES_CATEGORY_PARAM = "category";
 
     private static final String PAGE_NUMBER_PARAM = "page";
-
-    public enum MoviesCategory {
-        MOST_POPULAR, TOP_RATED
-    }
 
     private final AppCompatActivity mActivity;
 
@@ -203,7 +203,7 @@ public class MainController extends BusController {
 
             if (data != null) {
                 synchronized (mDataLock) {
-                    if (data.getMovies() != null) {
+                    if (data.getResults() != null) {
                         loaded = true;
 
                         mLastLoadedPage = data.getPage();
@@ -212,7 +212,7 @@ public class MainController extends BusController {
                             mMovies.clear();
                         }
 
-                        mMovies.addAll(data.getMovies());
+                        mMovies.addAll(data.getResults());
                         mTotalPages = data.getTotalPages();
                     }
 

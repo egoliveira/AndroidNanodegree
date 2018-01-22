@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class Movie implements Parcelable {
+public class Movie implements Parcelable, MovieInfo {
     private static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/";
 
     @SerializedName("id")
