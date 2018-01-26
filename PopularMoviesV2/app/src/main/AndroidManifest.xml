@@ -20,7 +20,8 @@
         </activity>
         <activity
             android:name=".view.detail.MovieDetailActivity"
-            android:parentActivityName=".view.MainActivity">
+            android:parentActivityName=".view.MainActivity"
+            android:theme="@style/MovieDetail">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.MainActivity" />

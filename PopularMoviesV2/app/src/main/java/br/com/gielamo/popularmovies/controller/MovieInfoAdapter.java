@@ -11,11 +11,15 @@ import java.util.List;
 import br.com.gielamo.popularmovies.R;
 import br.com.gielamo.popularmovies.model.vo.Movie;
 import br.com.gielamo.popularmovies.model.vo.MovieInfo;
+import br.com.gielamo.popularmovies.model.vo.Video;
 import br.com.gielamo.popularmovies.view.detail.MovieDetailViewHolder;
 import br.com.gielamo.popularmovies.view.detail.MovieInfoViewHolder;
+import br.com.gielamo.popularmovies.view.detail.MovieVideoViewHolder;
 
 public class MovieInfoAdapter extends Adapter<MovieInfoViewHolder> {
     private static final int MOVIE_DETAIL_TYPE = 1;
+
+    private static final int MOVIE_VIDEO_TYPE = 2;
 
     private final List<MovieInfo> mInfo;
 
@@ -32,6 +36,10 @@ public class MovieInfoAdapter extends Adapter<MovieInfoViewHolder> {
             View view = inflater.inflate(R.layout.movie_info_view, parent, false);
 
             vh = new MovieDetailViewHolder(view);
+        } else if (viewType == MOVIE_VIDEO_TYPE) {
+            View view = inflater.inflate(R.layout.movie_video_item_view, parent, false);
+
+            vh = new MovieVideoViewHolder(view);
         } else {
             throw new UnsupportedOperationException("Invalid view type: " + viewType);
         }
@@ -59,6 +67,8 @@ public class MovieInfoAdapter extends Adapter<MovieInfoViewHolder> {
 
         if (info instanceof Movie) {
             viewType = MOVIE_DETAIL_TYPE;
+        } else if (info instanceof Video) {
+            viewType = MOVIE_VIDEO_TYPE;
         } else {
             throw new UnsupportedOperationException("position " + position + " doesn't contain a valid type.");
         }

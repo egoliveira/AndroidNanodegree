@@ -20,6 +20,8 @@ public class MovieDetailViewHolder extends MovieInfoViewHolder {
 
     private final TextView mReleaseYear;
 
+    private final TextView mRuntimeLabel;
+
     private final TextView mRuntime;
 
     private final TextView mVoteAverage;
@@ -31,6 +33,7 @@ public class MovieDetailViewHolder extends MovieInfoViewHolder {
 
         mPoster = itemView.findViewById(R.id.movie_info_view_poster);
         mReleaseYear = itemView.findViewById(R.id.movie_info_view_release_year_value);
+        mRuntimeLabel = itemView.findViewById(R.id.movie_info_view_runtime_label);
         mRuntime = itemView.findViewById(R.id.movie_info_view_runtime_value);
         mVoteAverage = itemView.findViewById(R.id.movie_info_view_vote_average_value);
         mOverview = itemView.findViewById(R.id.movie_info_view_overview);
@@ -50,8 +53,13 @@ public class MovieDetailViewHolder extends MovieInfoViewHolder {
 
             mReleaseYear.setText(Integer.toString(calendar.get(Calendar.YEAR)));
 
-            mRuntime.setText(context.getString(R.string.movie_detail_view_holder_runtime_format,
-                    movie.getRuntime()));
+            if (movie.getRuntime() != null) {
+                mRuntime.setText(context.getString(R.string.movie_detail_view_holder_runtime_format,
+                        movie.getRuntime()));
+            } else {
+                mRuntimeLabel.setVisibility(View.GONE);
+                mRuntime.setVisibility(View.GONE);
+            }
 
             NumberFormat nf = NumberFormat.getNumberInstance();
             mVoteAverage.setText(context.getString(R.string.movie_detail_view_holder_vote_average_format, nf.format(movie.getVoteAverage())));
