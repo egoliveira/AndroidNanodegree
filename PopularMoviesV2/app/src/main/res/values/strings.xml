@@ -15,9 +15,9 @@
     has occurred while loading the top rated movies.</string>
 
     <!-- moview_info_view.xml -->
-    <string name="movie_info_view_release_year_label_text">Release Year</string>
-    <string name="movie_info_view_runtime_label_text">Runtime</string>
-    <string name="movie_info_view_vote_average_label_text">Vote Average</string>
+    <string name="movie_info_item_view_release_year_label_text">Release Year</string>
+    <string name="movie_info_item_view_runtime_label_text">Runtime</string>
+    <string name="movie_info_item_view_vote_average_label_text">Vote Average</string>
 
     <!-- MovieDetailViewHolder.java -->
     <string name="movie_detail_view_holder_runtime_format">%1$s minutes</string>

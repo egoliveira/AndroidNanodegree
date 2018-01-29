@@ -31,12 +31,12 @@ public class MovieDetailViewHolder extends MovieInfoViewHolder {
     public MovieDetailViewHolder(View itemView) {
         super(itemView);
 
-        mPoster = itemView.findViewById(R.id.movie_info_view_poster);
-        mReleaseYear = itemView.findViewById(R.id.movie_info_view_release_year_value);
-        mRuntimeLabel = itemView.findViewById(R.id.movie_info_view_runtime_label);
-        mRuntime = itemView.findViewById(R.id.movie_info_view_runtime_value);
-        mVoteAverage = itemView.findViewById(R.id.movie_info_view_vote_average_value);
-        mOverview = itemView.findViewById(R.id.movie_info_view_overview);
+        mPoster = itemView.findViewById(R.id.movie_info_item_view_poster);
+        mReleaseYear = itemView.findViewById(R.id.movie_info_item_view_release_year_value);
+        mRuntimeLabel = itemView.findViewById(R.id.movie_info_item_view_runtime_label);
+        mRuntime = itemView.findViewById(R.id.movie_info_item_view_runtime_value);
+        mVoteAverage = itemView.findViewById(R.id.movie_info_item_view_vote_average_value);
+        mOverview = itemView.findViewById(R.id.movie_info_item_view_overview);
     }
 
     @Override

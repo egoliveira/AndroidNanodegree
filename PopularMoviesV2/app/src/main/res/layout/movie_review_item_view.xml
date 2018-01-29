@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/movie_review_item_view_review"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis non orci eget nisi laoreet vestibulum at vitae metus. Sed non sem consectetur, volutpat felis sed, malesuada enim. Sed non arcu et dolor viverra tempus ut vel sem. Fusce ut lorem sagittis, finibus tellus luctus, commodo lorem. Vestibulum sodales venenatis mauris, ac placerat felis vulputate consectetur. Fusce vel egestas ante. Vivamus consectetur lacus in vulputate venenatis. Quisque volutpat nulla finibus, mollis neque vel, gravida orci." />
+
+    <TextView
+        android:id="@+id/movie_review_item_view_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        tools:text="Author" />
+</LinearLayout>

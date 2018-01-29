@@ -49,7 +49,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                 mController = new MovieDetailController(this, movie);
                 mController.register(this);
 
-                mAdapter = new MovieInfoAdapter();
+                mAdapter = new MovieInfoAdapter(new MovieInfoAdapterListener());
 
                 mViewHolder = new ViewHolder();
 
@@ -108,6 +108,18 @@ public class MovieDetailActivity extends AppCompatActivity {
     private void populateAdapter() {
         mAdapter.setItems(mController.getMovieInfo());
         mAdapter.notifyDataSetChanged();
+    }
+
+    private class MovieInfoAdapterListener implements MovieInfoAdapter.MovieInfoAdapterListener {
+        @Override
+        public void onMovieReviewClicked(int position) {
+
+        }
+
+        @Override
+        public void onMovieVideoClicked(int position) {
+
+        }
     }
 
     private class ViewHolder {

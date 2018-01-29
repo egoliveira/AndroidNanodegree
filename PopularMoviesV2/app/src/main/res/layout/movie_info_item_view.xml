@@ -7,9 +7,9 @@
     android:paddingBottom="16dp">
 
     <ImageView
-        android:id="@+id/movie_info_view_poster"
-        android:layout_width="@dimen/movie_info_view_poster_width"
-        android:layout_height="@dimen/movie_info_view_poster_height"
+        android:id="@+id/movie_info_item_view_poster"
+        android:layout_width="@dimen/movie_info_item_view_poster_width"
+        android:layout_height="@dimen/movie_info_item_view_poster_height"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -18,76 +18,76 @@
         app:srcCompat="@mipmap/ic_launcher" />
 
     <TextView
-        android:id="@+id/movie_info_view_release_year_label"
+        android:id="@+id/movie_info_item_view_release_year_label"
         style="@style/MovieDetail.Label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="@string/movie_info_view_release_year_label_text"
-        app:layout_constraintStart_toEndOf="@+id/movie_info_view_poster"
+        android:text="@string/movie_info_item_view_release_year_label_text"
+        app:layout_constraintStart_toEndOf="@+id/movie_info_item_view_poster"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/movie_info_view_release_year_value"
+        android:id="@+id/movie_info_item_view_release_year_value"
         style="@style/MovieDetail.Value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintStart_toStartOf="@+id/movie_info_view_release_year_label"
-        app:layout_constraintTop_toBottomOf="@+id/movie_info_view_release_year_label"
+        app:layout_constraintStart_toStartOf="@+id/movie_info_item_view_release_year_label"
+        app:layout_constraintTop_toBottomOf="@+id/movie_info_item_view_release_year_label"
         tools:text="2017" />
 
     <TextView
-        android:id="@+id/movie_info_view_runtime_label"
+        android:id="@+id/movie_info_item_view_runtime_label"
         style="@style/MovieDetail.Label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="@string/movie_info_view_runtime_label_text"
-        app:layout_constraintStart_toEndOf="@+id/movie_info_view_poster"
-        app:layout_constraintTop_toBottomOf="@+id/movie_info_view_release_year_value" />
+        android:text="@string/movie_info_item_view_runtime_label_text"
+        app:layout_constraintStart_toEndOf="@+id/movie_info_item_view_poster"
+        app:layout_constraintTop_toBottomOf="@+id/movie_info_item_view_release_year_value" />
 
     <TextView
-        android:id="@+id/movie_info_view_runtime_value"
+        android:id="@+id/movie_info_item_view_runtime_value"
         style="@style/MovieDetail.Value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintStart_toStartOf="@+id/movie_info_view_runtime_label"
-        app:layout_constraintTop_toBottomOf="@+id/movie_info_view_runtime_label"
+        app:layout_constraintStart_toStartOf="@+id/movie_info_item_view_runtime_label"
+        app:layout_constraintTop_toBottomOf="@+id/movie_info_item_view_runtime_label"
         tools:text="125 minutes" />
 
     <TextView
-        android:id="@+id/movie_info_view_vote_average_label"
+        android:id="@+id/movie_info_item_view_vote_average_label"
         style="@style/MovieDetail.Label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="@string/movie_info_view_vote_average_label_text"
-        app:layout_constraintStart_toEndOf="@+id/movie_info_view_poster"
-        app:layout_constraintTop_toBottomOf="@+id/movie_info_view_runtime_value" />
+        android:text="@string/movie_info_item_view_vote_average_label_text"
+        app:layout_constraintStart_toEndOf="@+id/movie_info_item_view_poster"
+        app:layout_constraintTop_toBottomOf="@+id/movie_info_item_view_runtime_value" />
 
     <TextView
-        android:id="@+id/movie_info_view_vote_average_value"
+        android:id="@+id/movie_info_item_view_vote_average_value"
         style="@style/MovieDetail.Value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintStart_toStartOf="@+id/movie_info_view_vote_average_label"
-        app:layout_constraintTop_toBottomOf="@+id/movie_info_view_vote_average_label"
+        app:layout_constraintStart_toStartOf="@+id/movie_info_item_view_vote_average_label"
+        app:layout_constraintTop_toBottomOf="@+id/movie_info_item_view_vote_average_label"
         tools:text="8.3/10" />
 
     <TextView
-        android:id="@+id/movie_info_view_overview"
+        android:id="@+id/movie_info_item_view_overview"
         style="@style/MovieDetail.Overview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -96,6 +96,6 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/movie_info_view_poster"
+        app:layout_constraintTop_toBottomOf="@+id/movie_info_item_view_poster"
         tools:text="Overview" />
 </android.support.constraint.ConstraintLayout>

@@ -11,9 +11,11 @@ import java.util.List;
 import br.com.gielamo.popularmovies.R;
 import br.com.gielamo.popularmovies.model.vo.Movie;
 import br.com.gielamo.popularmovies.model.vo.MovieInfo;
+import br.com.gielamo.popularmovies.model.vo.Review;
 import br.com.gielamo.popularmovies.model.vo.Video;
 import br.com.gielamo.popularmovies.view.detail.MovieDetailViewHolder;
 import br.com.gielamo.popularmovies.view.detail.MovieInfoViewHolder;
+import br.com.gielamo.popularmovies.view.detail.MovieReviewViewHolder;
 import br.com.gielamo.popularmovies.view.detail.MovieVideoViewHolder;
 
 public class MovieInfoAdapter extends Adapter<MovieInfoViewHolder> {
@@ -21,9 +23,14 @@ public class MovieInfoAdapter extends Adapter<MovieInfoViewHolder> {
 
     private static final int MOVIE_VIDEO_TYPE = 2;
 
+    private static final int MOVIE_REVIEW_TYPE = 3;
+
     private final List<MovieInfo> mInfo;
 
-    public MovieInfoAdapter() {
+    private final MovieInfoAdapterListener mListener;
+
+    public MovieInfoAdapter(MovieInfoAdapterListener listener) {
+        mListener = listener;
         mInfo = new ArrayList<>();
     }
 
@@ -33,13 +40,17 @@ public class MovieInfoAdapter extends Adapter<MovieInfoViewHolder> {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         if (viewType == MOVIE_DETAIL_TYPE) {
-            View view = inflater.inflate(R.layout.movie_info_view, parent, false);
+            View view = inflater.inflate(R.layout.movie_info_item_view, parent, false);
 
             vh = new MovieDetailViewHolder(view);
         } else if (viewType == MOVIE_VIDEO_TYPE) {
             View view = inflater.inflate(R.layout.movie_video_item_view, parent, false);
 
-            vh = new MovieVideoViewHolder(view);
+            vh = new MovieVideoViewHolder(view, mListener);
+        } else if (viewType == MOVIE_REVIEW_TYPE) {
+            View view = inflater.inflate(R.layout.movie_review_item_view, parent, false);
+
+            vh = new MovieReviewViewHolder(view, mListener);
         } else {
             throw new UnsupportedOperationException("Invalid view type: " + viewType);
         }
@@ -69,6 +80,8 @@ public class MovieInfoAdapter extends Adapter<MovieInfoViewHolder> {
             viewType = MOVIE_DETAIL_TYPE;
         } else if (info instanceof Video) {
             viewType = MOVIE_VIDEO_TYPE;
+        } else if (info instanceof Review) {
+            viewType = MOVIE_REVIEW_TYPE;
         } else {
             throw new UnsupportedOperationException("position " + position + " doesn't contain a valid type.");
         }
@@ -82,5 +95,8 @@ public class MovieInfoAdapter extends Adapter<MovieInfoViewHolder> {
         if (info != null) {
             mInfo.addAll(info);
         }
+    }
+
+    public interface MovieInfoAdapterListener extends MovieVideoViewHolder.MovieVideoClickListener, MovieReviewViewHolder.MovieReviewClickListener {
     }
 }

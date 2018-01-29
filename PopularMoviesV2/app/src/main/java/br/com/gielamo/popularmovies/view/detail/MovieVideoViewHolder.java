@@ -17,11 +17,23 @@ public class MovieVideoViewHolder extends MovieInfoViewHolder {
 
     private final TextView mTitle;
 
-    public MovieVideoViewHolder(View itemView) {
+    private final MovieVideoClickListener mListener;
+
+    public MovieVideoViewHolder(View itemView, MovieVideoClickListener listener) {
         super(itemView);
 
+        mListener = listener;
         mThumbnail = itemView.findViewById(R.id.movie_video_item_view_thumbnail);
         mTitle = itemView.findViewById(R.id.movie_video_item_view_title);
+
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    mListener.onMovieVideoClicked(getAdapterPosition());
+                }
+            }
+        });
     }
 
     @Override
@@ -33,5 +45,9 @@ public class MovieVideoViewHolder extends MovieInfoViewHolder {
 
             mTitle.setText(video.getName());
         }
+    }
+
+    public interface MovieVideoClickListener {
+        void onMovieVideoClicked(int position);
     }
 }
