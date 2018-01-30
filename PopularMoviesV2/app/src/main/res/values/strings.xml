@@ -22,4 +22,8 @@
     <!-- MovieDetailViewHolder.java -->
     <string name="movie_detail_view_holder_runtime_format">%1$s minutes</string>
     <string name="movie_detail_view_holder_vote_average_format">%1$s/10</string>
+
+    <!-- MovieDetailController.java -->
+    <string name="movie_detail_controller_trailers_section_title">Trailes</string>
+    <string name="movie_detail_controller_reviews_section_title">Reviews</string>
 </resources>

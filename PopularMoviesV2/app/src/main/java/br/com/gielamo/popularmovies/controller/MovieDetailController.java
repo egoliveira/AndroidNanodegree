@@ -11,12 +11,14 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.gielamo.popularmovies.R;
 import br.com.gielamo.popularmovies.model.business.TMDbServices;
 import br.com.gielamo.popularmovies.model.business.TMDbServicesFactory;
 import br.com.gielamo.popularmovies.model.vo.Movie;
 import br.com.gielamo.popularmovies.model.vo.MovieDetail;
 import br.com.gielamo.popularmovies.model.vo.MovieDetailControllerMessage;
 import br.com.gielamo.popularmovies.model.vo.MovieInfo;
+import br.com.gielamo.popularmovies.model.vo.MovieInfoHeader;
 import br.com.gielamo.popularmovies.model.vo.ReviewList;
 import br.com.gielamo.popularmovies.model.vo.VideoList;
 import retrofit2.Call;
@@ -138,11 +140,13 @@ public class MovieDetailController extends BusController {
 
                     mMovieInfo.add(data.getMovie());
 
-                    if ((data.getVideoList() != null) && (data.getVideoList().getVideos() != null)) {
+                    if ((data.getVideoList() != null) && (data.getVideoList().getVideos() != null) && (!data.getVideoList().getVideos().isEmpty())) {
+                        mMovieInfo.add(new MovieInfoHeader(mActivity.getString(R.string.movie_detail_controller_trailers_section_title)));
                         mMovieInfo.addAll(data.getVideoList().getVideos());
                     }
 
-                    if ((data.getReviewList() != null) && (data.getReviewList().getResults() != null)) {
+                    if ((data.getReviewList() != null) && (data.getReviewList().getResults() != null) && (!data.getReviewList().getResults().isEmpty())) {
+                        mMovieInfo.add(new MovieInfoHeader(mActivity.getString(R.string.movie_detail_controller_reviews_section_title)));
                         mMovieInfo.addAll(data.getReviewList().getResults());
 
                         mReviewPage = data.getReviewList().getPage();
