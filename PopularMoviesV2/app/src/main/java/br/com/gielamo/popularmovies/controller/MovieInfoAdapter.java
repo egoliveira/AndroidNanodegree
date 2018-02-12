@@ -108,6 +108,16 @@ public class MovieInfoAdapter extends RecyclerView.Adapter<MovieInfoViewHolder> 
         }
     }
 
+    public MovieInfo getItem(int position) {
+        MovieInfo movieInfo = null;
+
+        if ((position >= 0) && (position < mInfo.size())) {
+            movieInfo = mInfo.get(position);
+        }
+
+        return movieInfo;
+    }
+
     public interface MovieInfoAdapterListener extends MovieVideoViewHolder.MovieVideoClickListener, MovieReviewViewHolder.MovieReviewClickListener {
     }
 }

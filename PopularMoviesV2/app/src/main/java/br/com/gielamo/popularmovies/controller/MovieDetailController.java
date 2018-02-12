@@ -1,12 +1,15 @@
 package br.com.gielamo.popularmovies.controller;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +23,7 @@ import br.com.gielamo.popularmovies.model.vo.MovieDetailControllerMessage;
 import br.com.gielamo.popularmovies.model.vo.MovieInfo;
 import br.com.gielamo.popularmovies.model.vo.MovieInfoHeader;
 import br.com.gielamo.popularmovies.model.vo.ReviewList;
+import br.com.gielamo.popularmovies.model.vo.Video;
 import br.com.gielamo.popularmovies.model.vo.VideoList;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -75,6 +79,18 @@ public class MovieDetailController extends BusController {
     public boolean hasReviewsToLoad() {
         synchronized (mDataLock) {
             return mReviewPage < mTotalReviewPages;
+        }
+    }
+
+    public void playVideo(Video video) {
+        Uri uri = Uri.parse("https://www.youtube.com/watch?v=" + video.getVideoKey());
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+
+        if (intent.resolveActivity(mActivity.getPackageManager()) != null) {
+            mActivity.startActivity(Intent.createChooser(intent, mActivity.getString(R.string.movie_detail_controller_video_intent_chooser_title)));
+        } else {
+            Toast.makeText(mActivity, R.string.movie_detail_controller_no_video_players_error_message, Toast.LENGTH_LONG).show();
         }
     }
 

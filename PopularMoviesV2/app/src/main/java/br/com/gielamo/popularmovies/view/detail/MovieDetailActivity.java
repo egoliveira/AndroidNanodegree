@@ -20,6 +20,7 @@ import br.com.gielamo.popularmovies.controller.MovieInfoAdapter;
 import br.com.gielamo.popularmovies.model.vo.ImageWidth;
 import br.com.gielamo.popularmovies.model.vo.Movie;
 import br.com.gielamo.popularmovies.model.vo.MovieDetailControllerMessage;
+import br.com.gielamo.popularmovies.model.vo.Video;
 
 public class MovieDetailActivity extends AppCompatActivity {
     public static final String MOVIE_DATA_EXTRA = "br.com.gielamo.popularmovies.EXTRA.MOVIE_DATA";
@@ -118,7 +119,9 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         @Override
         public void onMovieVideoClicked(int position) {
+            Video video = (Video) mAdapter.getItem(position);
 
+            mController.playVideo(video);
         }
     }
 
