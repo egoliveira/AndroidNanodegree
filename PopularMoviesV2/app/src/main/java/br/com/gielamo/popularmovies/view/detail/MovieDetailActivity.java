@@ -20,6 +20,7 @@ import br.com.gielamo.popularmovies.controller.MovieInfoAdapter;
 import br.com.gielamo.popularmovies.model.vo.ImageWidth;
 import br.com.gielamo.popularmovies.model.vo.Movie;
 import br.com.gielamo.popularmovies.model.vo.MovieDetailControllerMessage;
+import br.com.gielamo.popularmovies.model.vo.Review;
 import br.com.gielamo.popularmovies.model.vo.Video;
 
 public class MovieDetailActivity extends AppCompatActivity {
@@ -114,7 +115,9 @@ public class MovieDetailActivity extends AppCompatActivity {
     private class MovieInfoAdapterListener implements MovieInfoAdapter.MovieInfoAdapterListener {
         @Override
         public void onMovieReviewClicked(int position) {
+            Review review = (Review) mAdapter.getItem(position);
 
+            mController.openReview(review);
         }
 
         @Override

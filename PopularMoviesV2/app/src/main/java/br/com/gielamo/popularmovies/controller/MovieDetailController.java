@@ -22,6 +22,7 @@ import br.com.gielamo.popularmovies.model.vo.MovieDetail;
 import br.com.gielamo.popularmovies.model.vo.MovieDetailControllerMessage;
 import br.com.gielamo.popularmovies.model.vo.MovieInfo;
 import br.com.gielamo.popularmovies.model.vo.MovieInfoHeader;
+import br.com.gielamo.popularmovies.model.vo.Review;
 import br.com.gielamo.popularmovies.model.vo.ReviewList;
 import br.com.gielamo.popularmovies.model.vo.Video;
 import br.com.gielamo.popularmovies.model.vo.VideoList;
@@ -91,6 +92,18 @@ public class MovieDetailController extends BusController {
             mActivity.startActivity(Intent.createChooser(intent, mActivity.getString(R.string.movie_detail_controller_video_intent_chooser_title)));
         } else {
             Toast.makeText(mActivity, R.string.movie_detail_controller_no_video_players_error_message, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void openReview(Review review) {
+        Uri uri = Uri.parse(review.getUrl());
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+
+        if (intent.resolveActivity(mActivity.getPackageManager()) != null) {
+            mActivity.startActivity(Intent.createChooser(intent, mActivity.getString(R.string.movie_detail_controller_review_intent_chooser_title)));
+        } else {
+            Toast.makeText(mActivity, R.string.movie_detail_controller_no_browsers_error_message, Toast.LENGTH_LONG).show();
         }
     }
 

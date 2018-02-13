@@ -28,4 +28,6 @@
     <string name="movie_detail_controller_reviews_section_title">Reviews</string>
     <string name="movie_detail_controller_video_intent_chooser_title">Select an application to play the video</string>
     <string name="movie_detail_controller_no_video_players_error_message">There is no available application to play the movie trailer.</string>
+    <string name="movie_detail_controller_review_intent_chooser_title">Select an application to open the review</string>
+    <string name="movie_detail_controller_no_browsers_error_message">There is no available application to open the movie review.</string>
 </resources>
