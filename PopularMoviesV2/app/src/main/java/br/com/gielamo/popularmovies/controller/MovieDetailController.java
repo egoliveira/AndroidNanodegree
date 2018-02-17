@@ -34,7 +34,11 @@ public class MovieDetailController extends BusController {
 
     private static final int MOVIE_INFO_REQUEST_ID = 17;
 
+    private static final int MORE_REVIEWS_REQUEST_ID = 18;
+
     private static final String MOVIE_ID_PARAM = "movieId";
+
+    private static final String REVIEW_PAGE_PARAM = "reviewPage";
 
     private final AppCompatActivity mActivity;
 
@@ -52,12 +56,15 @@ public class MovieDetailController extends BusController {
 
     private final LoaderManager.LoaderCallbacks<MovieDetail> mMovieInfoCallback;
 
+    private final LoaderManager.LoaderCallbacks<ReviewList> mReviewsCallback;
+
     public MovieDetailController(AppCompatActivity activity, Movie movieDetail) {
         this.mActivity = activity;
         this.mInitialMovieDetail = movieDetail;
         this.mMovieInfo = new ArrayList<>();
         this.mDataLock = new Object();
         this.mMovieInfoCallback = new LoadMovieInfoCallback();
+        this.mReviewsCallback = new LoadReviewsCallback();
     }
 
     public void loadMovieInfo() {
@@ -68,7 +75,19 @@ public class MovieDetailController extends BusController {
                 post(MovieDetailControllerMessage.LOADING_STARTED);
 
                 getLoaderManager().initLoader(MOVIE_INFO_REQUEST_ID,
-                        getRequestParams(mInitialMovieDetail.getId()), mMovieInfoCallback);
+                        getMovieRequestParams(mInitialMovieDetail.getId()), mMovieInfoCallback);
+            }
+        }
+    }
+
+    public void loadMoreReviews() {
+        synchronized (mDataLock) {
+            if (!mLoading && hasReviewsToLoad()) {
+                mLoading = true;
+
+                post(MovieDetailControllerMessage.LOADING_STARTED);
+
+                getLoaderManager().initLoader(MORE_REVIEWS_REQUEST_ID, getReviewsRequestParams(mInitialMovieDetail.getId(), mReviewPage + 1), mReviewsCallback);
             }
         }
     }
@@ -126,7 +145,7 @@ public class MovieDetailController extends BusController {
                 mReviewPage = bundle.getInt("reviewPage");
                 mTotalReviewPages = bundle.getInt("totalReviewPages");
             } else {
-                data = getRequestParams(mInitialMovieDetail.getId());
+                data = getMovieRequestParams(mInitialMovieDetail.getId());
             }
         }
 
@@ -143,10 +162,19 @@ public class MovieDetailController extends BusController {
         return mActivity.getSupportLoaderManager();
     }
 
-    private static Bundle getRequestParams(long movieId) {
+    private static Bundle getMovieRequestParams(long movieId) {
         Bundle bundle = new Bundle();
 
         bundle.putLong(MOVIE_ID_PARAM, movieId);
+
+        return bundle;
+    }
+
+    private static Bundle getReviewsRequestParams(long movieId, int page) {
+        Bundle bundle = new Bundle();
+
+        bundle.putLong(MOVIE_ID_PARAM, movieId);
+        bundle.putInt(REVIEW_PAGE_PARAM, page);
 
         return bundle;
     }
@@ -202,6 +230,49 @@ public class MovieDetailController extends BusController {
 
         @Override
         public void onLoaderReset(Loader<MovieDetail> loader) {
+            // Do nothing
+        }
+    }
+
+    private class LoadReviewsCallback implements LoaderManager.LoaderCallbacks<ReviewList> {
+        @Override
+        public Loader<ReviewList> onCreateLoader(int id, Bundle args) {
+            return new ReviewListLoader(mActivity, args);
+        }
+
+        @Override
+        public void onLoadFinished(Loader<ReviewList> loader, ReviewList data) {
+            boolean loaded = false;
+
+            if (data != null) {
+                synchronized (mDataLock) {
+                    loaded = true;
+
+                    mMovieInfo.addAll(data.getResults());
+
+                    mReviewPage = data.getPage();
+                    mTotalReviewPages = data.getTotalPages();
+
+                    mLoading = false;
+                }
+            } else {
+                synchronized (mDataLock) {
+                    mReviewPage = 0;
+                    mTotalReviewPages = 0;
+
+                    mLoading = false;
+                }
+            }
+
+            if (loaded) {
+                post(MovieDetailControllerMessage.LOADING_FINISHED);
+            } else {
+                post(MovieDetailControllerMessage.LOADING_ERROR);
+            }
+        }
+
+        @Override
+        public void onLoaderReset(Loader<ReviewList> loader) {
             // Do nothing
         }
     }
@@ -283,6 +354,47 @@ public class MovieDetailController extends BusController {
             }
 
             return movieDetail;
+        }
+    }
+
+    private static class ReviewListLoader extends AsyncTaskLoader<ReviewList> {
+        private final Bundle mBundle;
+
+        ReviewListLoader(Context context, Bundle bundle) {
+            super(context);
+
+            this.mBundle = bundle;
+        }
+
+        @Override
+        protected void onStartLoading() {
+            forceLoad();
+        }
+
+        @Override
+        public ReviewList loadInBackground() {
+            ReviewList reviewList = null;
+
+            TMDbServices services = TMDbServicesFactory.create();
+
+            long movieId = mBundle.getLong(MOVIE_ID_PARAM);
+            int page = mBundle.getInt(REVIEW_PAGE_PARAM);
+
+            try {
+                Call<ReviewList> reviewListCall = services.getReviewList(movieId, page);
+
+                Response<ReviewList> reviewListResponse = reviewListCall.execute();
+
+                if (reviewListResponse.isSuccessful()) {
+                    reviewList = reviewListResponse.body();
+                } else {
+                    Log.e(LOG_TAG, "An error has occurred while fetching the review list for the movie id " + movieId + ".");
+                }
+            } catch (Exception e) {
+                Log.e(LOG_TAG, "Could not retrieve the review list for movie id " + movieId + ".", e);
+            }
+
+            return reviewList;
         }
     }
 }

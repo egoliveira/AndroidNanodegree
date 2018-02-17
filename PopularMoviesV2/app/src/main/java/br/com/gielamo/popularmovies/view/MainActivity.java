@@ -207,10 +207,10 @@ public class MainActivity extends AppCompatActivity {
             int errorMessageResId;
             if (mController.getMoviesCategory() == MainController.MoviesCategory.MOST_POPULAR) {
                 errorMessageResId = R.string
-                        .movie_detail_activity_most_popular_movies_loading_error_message;
+                        .main_activity_most_popular_movies_loading_error_message;
             } else if (mController.getMoviesCategory() == MainController.MoviesCategory.TOP_RATED) {
                 errorMessageResId = R.string
-                        .movie_detail_activity_top_rated_movies_loading_error_message;
+                        .main_activity_top_rated_movies_loading_error_message;
             } else {
                 // TODO: favoritos
                 errorMessageResId = 0;

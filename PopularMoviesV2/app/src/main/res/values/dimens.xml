@@ -7,4 +7,5 @@
 
     <!-- movie_detail_activity.xml -->
     <dimen name="movie_detail_activity_app_bar_layout_height">250dp</dimen>
+    <dimen name="movie_detail_activity_top_progress_paddingTop">3dp</dimen>
 </resources>

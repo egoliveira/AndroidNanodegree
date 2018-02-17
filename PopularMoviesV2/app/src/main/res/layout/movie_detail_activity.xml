@@ -49,6 +49,17 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <ProgressBar
+        android:id="@+id/movie_detail_activity_top_progress"
+        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:paddingTop="@dimen/movie_detail_activity_top_progress_paddingTop"
+        android:visibility="gone"
+        app:layout_anchor="@id/movie_detail_activity_list"
+        app:layout_anchorGravity="top" />
+
+    <ProgressBar
         android:id="@+id/movie_detail_activity_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

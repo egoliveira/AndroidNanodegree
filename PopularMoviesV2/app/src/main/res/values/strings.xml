@@ -5,14 +5,14 @@
     <string name="main_activity_menu_most_popular_movies_title">Most Popular Movies</string>
     <string name="main_activity_menu_top_rated_movies_title">Top Rated Movies</string>
     <string name="main_activity_try_again_button_text">Try Again</string>
+    <string name="main_activity_most_popular_movies_loading_error_message">An error
+    has occurred while loading the most popular movies.</string>
+    <string name="main_activity_top_rated_movies_loading_error_message">An error
+    has occurred while loading the top rated movies.</string>
 
     <!-- MovieDetailActivity.java -->
-    <string name="movie_detail_activity_user_rating_text">User Rating: %1$s</string>
-    <string name="movie_detail_activity_release_date_text">Release Date: %1$s</string>
-    <string name="movie_detail_activity_most_popular_movies_loading_error_message">An error
-    has occurred while loading the most popular movies.</string>
-    <string name="movie_detail_activity_top_rated_movies_loading_error_message">An error
-    has occurred while loading the top rated movies.</string>
+    <string name="movie_detail_activity_error_loading_movie_info_message">An error has occurred while retrieving the movie information. Try again.</string>
+    <string name="movie_detail_activity_error_loading_movie_reviews_message">An error has occurred while retrieving additional movie reviews. Try again.</string>
 
     <!-- moview_info_view.xml -->
     <string name="movie_info_item_view_release_year_label_text">Release Year</string>

@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -100,7 +101,17 @@ public class MovieDetailActivity extends AppCompatActivity {
                 mViewHolder.toNormalState();
                 break;
             case LOADING_ERROR:
-                // TODO:
+                Toast toast;
+
+                if (mAdapter.getItemCount() == 0) {
+                    toast = Toast.makeText(this, R.string.movie_detail_activity_error_loading_movie_info_message, Toast.LENGTH_LONG);
+                    finish();
+                } else {
+                    toast = Toast.makeText(this, R.string.movie_detail_activity_error_loading_movie_reviews_message, Toast.LENGTH_LONG);
+                    mViewHolder.toNormalState();
+                }
+
+                toast.show();
                 break;
             default:
                 break;
@@ -128,6 +139,20 @@ public class MovieDetailActivity extends AppCompatActivity {
         }
     }
 
+    private class MovieInfoListScrollListener extends RecyclerView.OnScrollListener {
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            LinearLayoutManager llm = (LinearLayoutManager) recyclerView.getLayoutManager();
+
+            int lastVisiblePosition = llm.findLastVisibleItemPosition();
+            boolean isLastItem = lastVisiblePosition == mAdapter.getItemCount() - 1;
+
+            if (isLastItem && mController.hasReviewsToLoad()) {
+                mController.loadMoreReviews();
+            }
+        }
+    }
+
     private class ViewHolder {
         private final CollapsingToolbarLayout mToolbarLayout;
 
@@ -137,11 +162,14 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         private final ProgressBar mProgress;
 
+        private final ProgressBar mTopProgress;
+
         ViewHolder() {
             mToolbarLayout = findViewById(R.id.movie_detail_activity_collapsing_toolbar_layout);
             mBackdropImage = findViewById(R.id.movie_detail_activity_backdrop);
             mInfoList = findViewById(R.id.movie_detail_activity_list);
             mProgress = findViewById(R.id.movie_detail_activity_progress);
+            mTopProgress = findViewById(R.id.movie_detail_activity_top_progress);
 
             setupUI();
         }
@@ -149,6 +177,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         private void setupUI() {
             mInfoList.setAdapter(mAdapter);
             mInfoList.setLayoutManager(new LinearLayoutManager(MovieDetailActivity.this, LinearLayoutManager.VERTICAL, false));
+
+            mInfoList.addOnScrollListener(new MovieInfoListScrollListener());
         }
 
         private void setTitle(CharSequence title) {
@@ -163,12 +193,17 @@ public class MovieDetailActivity extends AppCompatActivity {
         }
 
         private void toLoadingState() {
-            mProgress.setVisibility(View.VISIBLE);
-            mInfoList.setVisibility(View.INVISIBLE);
+            if (mAdapter.getItemCount() == 0) {
+                mProgress.setVisibility(View.VISIBLE);
+                mInfoList.setVisibility(View.INVISIBLE);
+            } else {
+                mTopProgress.setVisibility(View.VISIBLE);
+            }
         }
 
         private void toNormalState() {
             mProgress.setVisibility(View.INVISIBLE);
+            mTopProgress.setVisibility(View.GONE);
             mInfoList.setVisibility(View.VISIBLE);
         }
     }
