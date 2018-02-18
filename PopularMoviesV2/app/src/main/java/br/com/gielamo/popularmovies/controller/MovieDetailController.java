@@ -162,6 +162,7 @@ public class MovieDetailController extends BusController {
             bundle.putInt("reviewPage", mReviewPage);
             bundle.putInt("totalReviewPages", mTotalReviewPages);
             bundle.putBoolean("loading", mLoading);
+            bundle.putBoolean("favorite", mFavorite);
         }
     }
 
@@ -176,6 +177,7 @@ public class MovieDetailController extends BusController {
                 mMovieInfo.addAll(movieInfo);
                 mReviewPage = bundle.getInt("reviewPage");
                 mTotalReviewPages = bundle.getInt("totalReviewPages");
+                mFavorite = bundle.getBoolean("favorite");
             } else {
                 data = getMovieRequestParams(mInitialMovieDetail.getId());
             }
