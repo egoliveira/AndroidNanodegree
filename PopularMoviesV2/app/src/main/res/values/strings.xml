@@ -30,4 +30,10 @@
     <string name="movie_detail_controller_no_video_players_error_message">There is no available application to play the movie trailer.</string>
     <string name="movie_detail_controller_review_intent_chooser_title">Select an application to open the review</string>
     <string name="movie_detail_controller_no_browsers_error_message">There is no available application to open the movie review.</string>
+
+    <!-- movie_detail_activity_favorite_menu.xml -->
+    <string name="movie_detail_activity_favorite_menu_title">Favorite Movie</string>
+
+    <!-- movie_detail_activity_unfavorite_menu.xml -->
+    <string name="movie_detail_activity_unfavorite_menu_title">Unfavorite Movie</string>
 </resources>

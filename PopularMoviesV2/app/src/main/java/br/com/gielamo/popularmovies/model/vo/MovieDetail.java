@@ -7,6 +7,8 @@ public class MovieDetail {
 
     private ReviewList mReviewList;
 
+    private boolean mFavorite;
+
     public Movie getMovie() {
         return mMovie;
     }
@@ -29,5 +31,13 @@ public class MovieDetail {
 
     public void setReviewList(ReviewList reviewList) {
         this.mReviewList = reviewList;
+    }
+
+    public boolean isFavorite() {
+        return mFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.mFavorite = favorite;
     }
 }

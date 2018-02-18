@@ -3,6 +3,7 @@ package br.com.gielamo.popularmovies.controller;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -11,10 +12,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.gielamo.popularmovies.R;
+import br.com.gielamo.popularmovies.model.business.FavoriteMovieBO;
 import br.com.gielamo.popularmovies.model.business.TMDbServices;
 import br.com.gielamo.popularmovies.model.business.TMDbServicesFactory;
 import br.com.gielamo.popularmovies.model.vo.Movie;
@@ -45,6 +48,8 @@ public class MovieDetailController extends BusController {
     private final Movie mInitialMovieDetail;
 
     private final ArrayList<MovieInfo> mMovieInfo;
+
+    private boolean mFavorite;
 
     private int mReviewPage;
 
@@ -96,6 +101,18 @@ public class MovieDetailController extends BusController {
         return new ArrayList<>(mMovieInfo);
     }
 
+    public boolean isLoading() {
+        synchronized (mDataLock) {
+            return mLoading;
+        }
+    }
+
+    public boolean isFavorite() {
+        synchronized (mDataLock) {
+            return mFavorite;
+        }
+    }
+
     public boolean hasReviewsToLoad() {
         synchronized (mDataLock) {
             return mReviewPage < mTotalReviewPages;
@@ -126,11 +143,25 @@ public class MovieDetailController extends BusController {
         }
     }
 
+    public void switchFavorite() {
+        synchronized (mDataLock) {
+            if (!mLoading) {
+                mFavorite = !mFavorite;
+
+                ChangeFavoriteStatusTask task = new ChangeFavoriteStatusTask(mInitialMovieDetail,
+                        mFavorite, mActivity.getApplicationContext());
+
+                task.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+            }
+        }
+    }
+
     public void saveState(Bundle bundle) {
         synchronized (mDataLock) {
             bundle.putParcelableArrayList("movieInfo", mMovieInfo);
             bundle.putInt("reviewPage", mReviewPage);
             bundle.putInt("totalReviewPages", mTotalReviewPages);
+            bundle.putBoolean("loading", mLoading);
         }
     }
 
@@ -138,9 +169,10 @@ public class MovieDetailController extends BusController {
         Bundle data = null;
 
         synchronized (mDataLock) {
+            boolean loading = bundle.getBoolean("loading");
             List<MovieInfo> movieInfo = bundle.getParcelableArrayList("movieInfo");
 
-            if (movieInfo != null) {
+            if ((!loading) && (movieInfo != null)) {
                 mMovieInfo.addAll(movieInfo);
                 mReviewPage = bundle.getInt("reviewPage");
                 mTotalReviewPages = bundle.getInt("totalReviewPages");
@@ -152,7 +184,7 @@ public class MovieDetailController extends BusController {
         if (data == null) {
             post(MovieDetailControllerMessage.LOADING_FINISHED);
         } else {
-            getLoaderManager().restartLoader(MOVIE_INFO_REQUEST_ID, data, mMovieInfoCallback);
+            getLoaderManager().initLoader(MOVIE_INFO_REQUEST_ID, data, mMovieInfoCallback);
 
             post(MovieDetailControllerMessage.LOADING_STARTED);
         }
@@ -196,6 +228,7 @@ public class MovieDetailController extends BusController {
                     mMovieInfo.clear();
 
                     mMovieInfo.add(data.getMovie());
+                    mFavorite = data.isFavorite();
 
                     if ((data.getVideoList() != null) && (data.getVideoList().getVideos() != null) && (!data.getVideoList().getVideos().isEmpty())) {
                         mMovieInfo.add(new MovieInfoHeader(mActivity.getString(R.string.movie_detail_controller_trailers_section_title)));
@@ -316,6 +349,9 @@ public class MovieDetailController extends BusController {
             }
 
             if (movieDetail != null) {
+                FavoriteMovieBO favoriteMovieBO = new FavoriteMovieBO();
+                movieDetail.setFavorite(favoriteMovieBO.isFavorite(movieId, getContext()));
+
                 try {
                     Call<VideoList> videoListCall = services.getVideoList(movieId);
 
@@ -395,6 +431,34 @@ public class MovieDetailController extends BusController {
             }
 
             return reviewList;
+        }
+    }
+
+    private static class ChangeFavoriteStatusTask extends AsyncTask<Void, Void, Void> {
+        private final Movie mMovieInfo;
+
+        private final boolean mFavorite;
+
+        private final WeakReference<Context> mContext;
+
+        ChangeFavoriteStatusTask(Movie movieInfo, boolean favorite, Context context) {
+            this.mMovieInfo = movieInfo;
+            this.mFavorite = favorite;
+            this.mContext = new WeakReference<>(context);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            FavoriteMovieBO favoriteMovieBO = new FavoriteMovieBO();
+
+
+            if (mFavorite) {
+                favoriteMovieBO.favorite(mMovieInfo, mContext.get());
+            } else {
+                favoriteMovieBO.unfavorite(mMovieInfo.getId(), mContext.get());
+            }
+
+            return null;
         }
     }
 }

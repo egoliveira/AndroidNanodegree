@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -90,6 +92,39 @@ public class MovieDetailActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        boolean created = false;
+
+        if (!mController.isLoading() || (mAdapter.getItemCount() > 0)) {
+            if (mController.isFavorite()) {
+                getMenuInflater().inflate(R.menu.movie_detail_activity_unfavorite_menu, menu);
+            } else {
+                getMenuInflater().inflate(R.menu.movie_detail_activity_favorite_menu, menu);
+            }
+
+            created = true;
+        }
+
+        return created || super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        boolean handled;
+
+        if ((item.getItemId() == R.id.movie_detail_activity_favorite_menu) || (item.getItemId() == R.id.movie_detail_activity_unfavorite_menu)) {
+            mController.switchFavorite();
+            invalidateOptionsMenu();
+
+            handled = true;
+        } else {
+            handled = super.onOptionsItemSelected(item);
+        }
+
+        return handled;
+    }
+
     @Subscribe
     public void onMovieDetailControllerMessageReceived(MovieDetailControllerMessage message) {
         switch (message) {
@@ -99,6 +134,7 @@ public class MovieDetailActivity extends AppCompatActivity {
             case LOADING_FINISHED:
                 populateAdapter();
                 mViewHolder.toNormalState();
+                invalidateOptionsMenu();
                 break;
             case LOADING_ERROR:
                 Toast toast;
