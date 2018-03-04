@@ -57,6 +57,8 @@ public class MovieDetailController extends BusController {
 
     private boolean mLoading;
 
+    private boolean mFavoriteChanged;
+
     private final Object mDataLock;
 
     private final LoaderManager.LoaderCallbacks<MovieDetail> mMovieInfoCallback;
@@ -113,6 +115,12 @@ public class MovieDetailController extends BusController {
         }
     }
 
+    public boolean isFavoriteChanged() {
+        synchronized (mDataLock) {
+            return mFavoriteChanged;
+        }
+    }
+
     public boolean hasReviewsToLoad() {
         synchronized (mDataLock) {
             return mReviewPage < mTotalReviewPages;
@@ -147,6 +155,9 @@ public class MovieDetailController extends BusController {
         synchronized (mDataLock) {
             if (!mLoading) {
                 mFavorite = !mFavorite;
+                mFavoriteChanged = !mFavoriteChanged;
+
+                post(MovieDetailControllerMessage.FAVORITE_CHANGED);
 
                 ChangeFavoriteStatusTask task = new ChangeFavoriteStatusTask(mInitialMovieDetail,
                         mFavorite, mActivity.getApplicationContext());
@@ -163,6 +174,7 @@ public class MovieDetailController extends BusController {
             bundle.putInt("totalReviewPages", mTotalReviewPages);
             bundle.putBoolean("loading", mLoading);
             bundle.putBoolean("favorite", mFavorite);
+            bundle.putBoolean("favoriteChanged", mFavoriteChanged);
         }
     }
 
@@ -178,6 +190,7 @@ public class MovieDetailController extends BusController {
                 mReviewPage = bundle.getInt("reviewPage");
                 mTotalReviewPages = bundle.getInt("totalReviewPages");
                 mFavorite = bundle.getBoolean("favorite");
+                mFavoriteChanged = bundle.getBoolean("favoriteChanged");
             } else {
                 data = getMovieRequestParams(mInitialMovieDetail.getId());
             }

@@ -14,10 +14,6 @@ import android.support.annotation.Nullable;
 import br.com.gielamo.popularmovies.model.persistence.PopularMoviesContract;
 import br.com.gielamo.popularmovies.model.persistence.PopularMoviesDbHelper;
 
-/**
- * Created by eduardo.oliveira on 16/01/2018.
- */
-
 public class PopularMoviesContentProvider extends ContentProvider {
     private static final int MOVIES = 100;
 

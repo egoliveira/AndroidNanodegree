@@ -15,13 +15,18 @@ import android.widget.Toast;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.List;
+
 import br.com.gielamo.popularmovies.R;
 import br.com.gielamo.popularmovies.controller.MainController;
 import br.com.gielamo.popularmovies.controller.MoviesAdapter;
 import br.com.gielamo.popularmovies.model.vo.MainControllerMessage;
+import br.com.gielamo.popularmovies.model.vo.Movie;
 import br.com.gielamo.popularmovies.view.detail.MovieDetailActivity;
 
 public class MainActivity extends AppCompatActivity {
+    private static final int MOVIE_DETAIL_REQUEST_CODE = 0x10;
+
     private MainController mController;
 
     private ViewHolder mViewHolder;
@@ -64,6 +69,26 @@ public class MainActivity extends AppCompatActivity {
 
         getMenuInflater().inflate(R.menu.main_activity_menu, menu);
 
+        MenuItem item = null;
+
+        switch (mController.getMoviesCategory()) {
+            case MOST_POPULAR:
+                item = menu.findItem(R.id.main_activity_menu_most_popular_movies);
+                break;
+            case TOP_RATED:
+                item = menu.findItem(R.id.main_activity_menu_top_rated_movies);
+                break;
+            case FAVORITE:
+                item = menu.findItem(R.id.main_activity_menu_favorite_movies);
+                break;
+            default:
+                break;
+        }
+
+        if (item != null) {
+            item.setChecked(true);
+        }
+
         return true;
     }
 
@@ -74,10 +99,17 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.main_activity_menu_most_popular_movies:
                 switchCategory(MainController.MoviesCategory.MOST_POPULAR);
+                item.setChecked(true);
                 handled = true;
                 break;
             case R.id.main_activity_menu_top_rated_movies:
                 switchCategory(MainController.MoviesCategory.TOP_RATED);
+                item.setChecked(true);
+                handled = true;
+                break;
+            case R.id.main_activity_menu_favorite_movies:
+                switchCategory(MainController.MoviesCategory.FAVORITE);
+                item.setChecked(true);
                 handled = true;
                 break;
             default:
@@ -86,6 +118,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return handled;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == MOVIE_DETAIL_REQUEST_CODE) {
+            if (resultCode == MovieDetailActivity.MOVIE_FAVORITE_STATUS_CHANGED_RESULT_CODE) {
+                mController.loadFirstPage();
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
@@ -102,10 +145,17 @@ public class MainActivity extends AppCompatActivity {
                 mViewHolder.toLoadingState();
                 break;
             case LOADING_FINISHED:
-                mAdapter.setItems(mController.getMovies());
-                mAdapter.notifyDataSetChanged();
+                List<Movie> movies = mController.getMovies();
 
-                mViewHolder.toNormalState();
+                if (!movies.isEmpty()) {
+                    mAdapter.setItems(movies);
+                    mAdapter.notifyDataSetChanged();
+
+                    mViewHolder.toNormalState();
+                } else if (mController.getMoviesCategory() == MainController.MoviesCategory.FAVORITE) {
+                    mViewHolder.toEmptyState();
+                }
+
                 break;
             case LOADING_ERROR:
                 mViewHolder.toErrorState();
@@ -133,14 +183,15 @@ public class MainActivity extends AppCompatActivity {
 
             intent.putExtra(MovieDetailActivity.MOVIE_DATA_EXTRA, mAdapter.getItem(position));
 
-            startActivity(intent);
+            startActivityForResult(intent, MOVIE_DETAIL_REQUEST_CODE);
         }
     }
 
     private class MoviesListScrollListener extends RecyclerView.OnScrollListener {
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            if (mViewHolder.isNMinus1RowVisible() && mController.canLoadMorePages()) {
+            if ((mController.getMoviesCategory() != MainController.MoviesCategory.FAVORITE) &&
+                    (mViewHolder.isNMinus1RowVisible()) && (mController.canLoadMorePages())) {
                 mController.loadNextPage();
             }
         }
@@ -156,6 +207,8 @@ public class MainActivity extends AppCompatActivity {
         private final View mErrorArea;
 
         private final TextView mErrorMessage;
+
+        private final Button mTryAgainButton;
 
         private final GridLayoutManager mLayoutManager;
 
@@ -175,9 +228,9 @@ public class MainActivity extends AppCompatActivity {
             mMovies.addOnScrollListener(new MoviesListScrollListener());
             mMovies.setHasFixedSize(true);
 
-            Button tryAgainButton = findViewById(R.id.main_activity_try_again_button);
+            mTryAgainButton = findViewById(R.id.main_activity_try_again_button);
 
-            tryAgainButton.setOnClickListener(new View.OnClickListener() {
+            mTryAgainButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mController.loadFirstPage();
@@ -212,7 +265,6 @@ public class MainActivity extends AppCompatActivity {
                 errorMessageResId = R.string
                         .main_activity_top_rated_movies_loading_error_message;
             } else {
-                // TODO: favoritos
                 errorMessageResId = 0;
             }
 
@@ -225,6 +277,16 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, errorMessageResId, Toast.LENGTH_LONG).show();
             }
 
+            mProgress.setVisibility(View.GONE);
+            mTopProgress.setVisibility(View.GONE);
+        }
+
+        void toEmptyState() {
+            mErrorMessage.setText(R.string.main_activity_empty_favorite_movies_list_message);
+
+            mMovies.setVisibility(View.INVISIBLE);
+            mErrorArea.setVisibility(View.VISIBLE);
+            mTryAgainButton.setVisibility(View.GONE);
             mProgress.setVisibility(View.GONE);
             mTopProgress.setVisibility(View.GONE);
         }

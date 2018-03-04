@@ -12,6 +12,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.gielamo.popularmovies.model.business.FavoriteMovieBO;
 import br.com.gielamo.popularmovies.model.business.TMDbServices;
 import br.com.gielamo.popularmovies.model.business.TMDbServicesFactory;
 import br.com.gielamo.popularmovies.model.vo.MainControllerMessage;
@@ -22,7 +23,7 @@ import retrofit2.Response;
 
 public class MainController extends BusController {
     public enum MoviesCategory {
-        MOST_POPULAR, TOP_RATED
+        MOST_POPULAR, TOP_RATED, FAVORITE
     }
 
     private static final String LOG_TAG = MainController.class.getSimpleName();
@@ -260,36 +261,43 @@ public class MainController extends BusController {
             MoviesCategory category = (MoviesCategory) mBundle.getSerializable(MOVIES_CATEGORY_PARAM);
             int page = mBundle.getInt(PAGE_NUMBER_PARAM, -1);
 
-            try {
-                Call<MovieList> call = null;
+            if (category == MoviesCategory.FAVORITE) {
+                FavoriteMovieBO favoriteMovieBO = new FavoriteMovieBO();
 
-                if (category == MoviesCategory.MOST_POPULAR) {
-                    if (page == -1) {
-                        call = services.getPopularMovies();
+                movieList = favoriteMovieBO.getFavoriteMovies(getContext());
+                movieList.setPage(1);
+            } else {
+                try {
+                    Call<MovieList> call = null;
+
+                    if (category == MoviesCategory.MOST_POPULAR) {
+                        if (page == -1) {
+                            call = services.getPopularMovies();
+                        } else {
+                            call = services.getPopularMovies(page);
+                        }
+                    } else if (category == MoviesCategory.TOP_RATED) {
+                        if (page == -1) {
+                            call = services.getTopRatedMovies();
+                        } else {
+                            call = services.getTopRatedMovies(page);
+                        }
                     } else {
-                        call = services.getPopularMovies(page);
+                        Log.e(LOG_TAG, "Invalid category: " + category);
                     }
-                } else if (category == MoviesCategory.TOP_RATED) {
-                    if (page == -1) {
-                        call = services.getTopRatedMovies();
-                    } else {
-                        call = services.getTopRatedMovies(page);
+
+                    if (call != null) {
+                        Response<MovieList> response = call.execute();
+
+                        if (response.isSuccessful()) {
+                            movieList = response.body();
+                        } else {
+                            Log.e(LOG_TAG, "An error has occurred while fetching the movies list for the category " + category);
+                        }
                     }
-                } else {
-                    Log.e(LOG_TAG, "Invalid category: " + category);
+                } catch (Exception e) {
+                    Log.e(LOG_TAG, "Could not retrieve the " + category + " movies list.", e);
                 }
-
-                if (call != null) {
-                    Response<MovieList> response = call.execute();
-
-                    if (response.isSuccessful()) {
-                        movieList = response.body();
-                    } else {
-                        Log.e(LOG_TAG, "An error has occurred while fetching the movies list for the category " + category);
-                    }
-                }
-            } catch (Exception e) {
-                Log.e(LOG_TAG, "Could not retrieve the " + category + " movies list.", e);
             }
 
             return movieList;

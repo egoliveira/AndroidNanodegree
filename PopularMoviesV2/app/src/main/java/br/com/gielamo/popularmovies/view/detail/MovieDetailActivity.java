@@ -1,5 +1,6 @@
 package br.com.gielamo.popularmovies.view.detail;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,8 @@ import br.com.gielamo.popularmovies.model.vo.Video;
 
 public class MovieDetailActivity extends AppCompatActivity {
     public static final String MOVIE_DATA_EXTRA = "br.com.gielamo.popularmovies.EXTRA.MOVIE_DATA";
+
+    public static final int MOVIE_FAVORITE_STATUS_CHANGED_RESULT_CODE = 0x1000;
 
     private MovieInfoAdapter mAdapter;
 
@@ -137,17 +140,22 @@ public class MovieDetailActivity extends AppCompatActivity {
                 invalidateOptionsMenu();
                 break;
             case LOADING_ERROR:
-                Toast toast;
-
                 if (mAdapter.getItemCount() == 0) {
-                    toast = Toast.makeText(this, R.string.movie_detail_activity_error_loading_movie_info_message, Toast.LENGTH_LONG);
+                    Toast.makeText(this, R.string.movie_detail_activity_error_loading_movie_info_message, Toast.LENGTH_LONG).show();
                     finish();
                 } else {
-                    toast = Toast.makeText(this, R.string.movie_detail_activity_error_loading_movie_reviews_message, Toast.LENGTH_LONG);
+                    Toast.makeText(this, R.string.movie_detail_activity_error_loading_movie_reviews_message, Toast.LENGTH_LONG).show();
                     mViewHolder.toNormalState();
                 }
 
-                toast.show();
+                break;
+
+            case FAVORITE_CHANGED:
+                if (mController.isFavoriteChanged()) {
+                    setResult(MOVIE_FAVORITE_STATUS_CHANGED_RESULT_CODE);
+                } else {
+                    setResult(Activity.RESULT_CANCELED);
+                }
                 break;
             default:
                 break;
