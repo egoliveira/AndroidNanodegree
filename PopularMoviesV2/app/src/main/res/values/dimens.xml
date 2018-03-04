@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- main_activity.xml -->
+    <dimen name="main_activity_top_progress_marginTop">-7dp</dimen>
+    <dimen name="movie_info_item_view_poster_width">134dp</dimen>
+    <dimen name="movie_info_item_view_poster_height">200dp</dimen>
+
+    <!-- movie_detail_activity.xml -->
+    <dimen name="movie_detail_activity_app_bar_layout_height">250dp</dimen>
+    <dimen name="movie_detail_activity_top_progress_paddingTop">3dp</dimen>
+</resources>

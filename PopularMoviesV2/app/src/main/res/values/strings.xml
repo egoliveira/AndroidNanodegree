@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+
+    <!-- MainActivity.java -->
+    <string name="main_activity_try_again_button_text">Try Again</string>
+    <string name="main_activity_most_popular_movies_loading_error_message">An error
+    has occurred while loading the most popular movies.</string>
+    <string name="main_activity_top_rated_movies_loading_error_message">An error
+    has occurred while loading the top rated movies.</string>
+    <string name="main_activity_empty_favorite_movies_list_message">You don\'t have favorite movies</string>
+
+    <!-- main_activity_menu.xml -->
+    <string name="main_activity_menu_most_popular_movies_title">Most Popular Movies</string>
+    <string name="main_activity_menu_top_rated_movies_title">Top Rated Movies</string>
+    <string name="main_activity_menu_favorite_movies_title">Favorite Movies</string>
+
+    <!-- MovieDetailActivity.java -->
+    <string name="movie_detail_activity_error_loading_movie_info_message">An error has occurred while retrieving the movie information. Try again.</string>
+    <string name="movie_detail_activity_error_loading_movie_reviews_message">An error has occurred while retrieving additional movie reviews. Try again.</string>
+
+    <!-- movie_info_view.xml -->
+    <string name="movie_info_item_view_release_year_label_text">Release Year</string>
+    <string name="movie_info_item_view_runtime_label_text">Runtime</string>
+    <string name="movie_info_item_view_vote_average_label_text">Vote Average</string>
+
+    <!-- MovieDetailViewHolder.java -->
+    <string name="movie_detail_view_holder_runtime_format">%1$s minutes</string>
+    <string name="movie_detail_view_holder_vote_average_format">%1$s/10</string>
+
+    <!-- MovieDetailController.java -->
+    <string name="movie_detail_controller_trailers_section_title">Trailes</string>
+    <string name="movie_detail_controller_reviews_section_title">Reviews</string>
+    <string name="movie_detail_controller_video_intent_chooser_title">Select an application to play the video</string>
+    <string name="movie_detail_controller_no_video_players_error_message">There is no available application to play the movie trailer.</string>
+    <string name="movie_detail_controller_review_intent_chooser_title">Select an application to open the review</string>
+    <string name="movie_detail_controller_no_browsers_error_message">There is no available application to open the movie review.</string>
+
+    <!-- movie_detail_activity_favorite_menu.xml -->
+    <string name="movie_detail_activity_favorite_menu_title">Favorite Movie</string>
+
+    <!-- movie_detail_activity_unfavorite_menu.xml -->
+    <string name="movie_detail_activity_unfavorite_menu_title">Unfavorite Movie</string>
+</resources>
